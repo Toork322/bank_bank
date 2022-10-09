@@ -50,7 +50,7 @@
                             <br>
                             <h5>Данные организации</h5>
                             <?php $this->view('includes/organization.data') ?>
-                            <h5>Данные физического лица</h5>
+                            <h5>Данные руководителя</h5>
                             <?php $this->view('includes/individual.data') ?>
                             <br>
                             <br>

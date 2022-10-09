@@ -3,14 +3,24 @@
 
 class Credit extends Product
 {
-    public function prepare_data($data) {
-        $prepared_data['credit_id'] = $data["credit_id"];
-        $prepared_data['credit_sum'] = $data['credit_sum'];
+    private $credit_sum;
 
-        return $prepared_data;
+    function __construct($date_opening, $date_closing, $period, $credit_sum)
+    {
+        parent::__construct($date_opening, $date_closing, $period);
+        $this->credit_data['credit_sum'] = $this->credit_sum = $credit_sum;
     }
 
-    public static function get_info_for_individual() {
+    function insert() {
+        $product_pk = parent::product_insert_and_get_last_pk();
+        $this->credit_data['credit_id'] = $product_pk[0]->product_id;
+
+        $prepared_data = $this->prepare_data($this->credit_data);
+        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
+        $this->query($query, $this->credit_data);
+    }
+
+    static function get_info_for_individual() {
         return [
             [
                 'name'=>'«Автокредит»',
@@ -33,7 +43,7 @@ class Credit extends Product
         ];
     }
 
-    public static function get_info_for_organization() {
+    static function get_info_for_organization() {
         return [
             [
                 'name'=>'Кредит «ОБОРОТ»',

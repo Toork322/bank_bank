@@ -1,37 +1,48 @@
 <?php
 
 class OrganizationController extends Controller {
+    static function add_general_information() {
+        $ceo_passport = new Passport(
+            $_POST['passport_series'],
+            $_POST['passport_number'],
+            $_POST['passport_issue_date']
+        );
+        $ceo = new Individual(
+            $_POST['phys_inn'],
+            $_POST['surname'],
+            $_POST['first_name'],
+            $_POST['patronymic'],
+            $_POST['birthday'],
+            1,
+            $_POST['phys_inn']
+        );
+        $ceo_passport->insert();
+        $ceo->add_passport($ceo_passport->get_passport_id());
+        $ceo->insert();
+
+        $organization = new Organization(
+            $_POST['jur_inn'],
+            $_POST['orgn'],
+            $_POST['name'],
+            $_POST['address'],
+            $_POST['kpp'],
+            $_POST['phys_inn']
+        );
+        $organization->insert();
+    }
+
     function credit() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $product = new Product();
-            $product_data = $product->prepare_data($_POST);
-            $last_pk = $product->insert_with_last_pk($product_data, "product_id");
+            $credit = new Credit(
+                date("Y-m-d"),
+                date('Y-m-d', strtotime("+".$_POST['period']." month", strtotime(date("Y-m-d")))),
+                $_POST['period'],
+                $_POST['credit_sum']
+            );
+            $credit->insert();
 
-            $credit = new Credit();
-            $_POST["credit_id"] = $last_pk[0]->product_id;
-            $credit_data = $credit->prepare_data($_POST);
-            $credit->insert($credit_data);
+            OrganizationController::add_general_information();
 
-            $customer_jur = new Customer();
-            $customer_data = $customer_jur->prepare_data($_POST['jur_inn']);
-            $customer_jur->insert($customer_data);
-
-            $customer_phys = new Customer();
-            $customer_data = $customer_phys->prepare_data($_POST['phys_inn']);
-            $customer_phys->insert($customer_data);
-
-            $ceo_passport = new Passport();
-            $ceo_passport_data = $ceo_passport->prepare_data($_POST);
-            $last_pk = $ceo_passport->insert_with_last_pk($ceo_passport_data, "passport_id");
-
-            $ceo = new Individual();
-            $_POST['passport_id'] = $last_pk[0]->passport_id;
-            $ceo_data = $ceo->prepare_data($_POST, true);
-            $ceo->insert($ceo_data);
-
-            $organization = new Organization();
-            $organization_data = $organization->prepare_data($_POST);
-            $organization->insert($organization_data);
             echo $this->view('/success');
        } else {
             $data = Credit::get_info_for_organization();
@@ -41,39 +52,23 @@ class OrganizationController extends Controller {
 
     function deposit() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $product = new Product();
-            $product_data = $product->prepare_data($_POST);
-            $last_pk = $product->insert_with_last_pk($product_data, "product_id");
-            
-            $deposit = new Deposit();
-            $deposit_data = $deposit->prepare_data($_POST, $last_pk[0]->product_id);
-            $deposit->insert($deposit_data);
+            $deposit = new Deposit(
+                date("Y-m-d"),
+                date('Y-m-d', strtotime("+".$_POST['period']." month", strtotime(date("Y-m-d")))),
+                $_POST['period'],
+                $_POST['rate'],
+                $_POST['capitalization_period_type']
+            );
+            $deposit->insert();
+        
+            OrganizationController::add_general_information();
 
-            $customer_jur = new Customer();
-            $customer_data = $customer_jur->prepare_data($_POST['jur_inn']);
-            $customer_jur->insert($customer_data);
-
-            $customer_phys = new Customer();
-            $customer_data = $customer_phys->prepare_data($_POST['phys_inn']);
-            $customer_phys->insert($customer_data);
-
-            $ceo_passport = new Passport();
-            $ceo_passport_data = $ceo_passport->prepare_data($_POST);
-            $last_pk = $ceo_passport->insert_with_last_pk($ceo_passport_data, "passport_id");
-
-            $ceo = new Individual();
-            $_POST['passport_id'] = $last_pk[0]->passport_id;
-            $ceo_data = $ceo->prepare_data($_POST, true);
-            $ceo->insert($ceo_data);
-
-            $organization = new Organization();
-            $organization_data = $organization->prepare_data($_POST);
-            $organization->insert($organization_data);
             echo $this->view('/success');
+
         } else {
             $data = Deposit::get_info_for_organization();
             echo $this->view('organization/deposit', ['data'=>$data]);
         }
+        
     }
-
 }

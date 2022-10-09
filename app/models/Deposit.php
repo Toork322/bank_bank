@@ -3,15 +3,26 @@
 
 class Deposit extends Product
 {
-    public function prepare_data($data, $pk = null) {
-        $prepared_data['deposit_id'] = $pk;
-        $prepared_data['rate'] = $data['rate'];
-        $prepared_data['capitalization_period_type'] = $data['capitalization_period_type'];
+    private $rate;
+    private $capitalization_period_type;
 
-        return $prepared_data;
+    function __construct($date_opening, $date_closing, $period, $rate, $capitalization_period_type)
+    {
+        parent::__construct($date_opening, $date_closing, $period);
+        $this->deposit_data['rate'] = $this->$rate = $rate;
+        $this->deposit_data['capitalization_period_type'] = $this->$capitalization_period_type = $capitalization_period_type;
     }
 
-    public static function get_info_for_individual() {
+    function insert() {
+        $product_pk = parent::product_insert_and_get_last_pk();
+        $this->deposit_data['deposit_id'] = $product_pk[0]->product_id;
+
+        $prepared_data = $this->prepare_data($this->deposit_data);
+        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
+        $this->query($query, $this->deposit_data);
+    }
+
+    static function get_info_for_individual() {
         return [
             [
                 'name'=>'«Удобный плюс»',
@@ -37,7 +48,7 @@ class Deposit extends Product
         ];
     }
 
-    public static function get_info_for_organization() {
+    static function get_info_for_organization() {
         return [
             [
                 'name'=>'Депозит «Срочный»',
