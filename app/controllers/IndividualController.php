@@ -53,7 +53,6 @@ class IndividualController extends Controller {
             IndividualController::add_general_information();
 
             echo $this->view('/success');
-  
         } else {
             $data = Deposit::get_info_for_individual();
             echo $this->view('/individual/deposit', ['data'=>$data]);

@@ -13,8 +13,7 @@ class OrganizationController extends Controller {
             $_POST['first_name'],
             $_POST['patronymic'],
             $_POST['birthday'],
-            1,
-            $_POST['phys_inn']
+            1
         );
         $ceo_passport->insert();
         $ceo->add_passport($ceo_passport->get_passport_id());
@@ -25,9 +24,9 @@ class OrganizationController extends Controller {
             $_POST['orgn'],
             $_POST['name'],
             $_POST['address'],
-            $_POST['kpp'],
-            $_POST['phys_inn']
+            $_POST['kpp']
         );
+        $organization->add_ceo($ceo->get_inn());
         $organization->insert();
     }
 

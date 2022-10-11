@@ -9,13 +9,15 @@ class Deposit extends Product
     function __construct($date_opening, $date_closing, $period, $rate, $capitalization_period_type)
     {
         parent::__construct($date_opening, $date_closing, $period);
-        $this->deposit_data['rate'] = $this->$rate = $rate;
-        $this->deposit_data['capitalization_period_type'] = $this->$capitalization_period_type = $capitalization_period_type;
+        $this->rate = $rate;
+        $this->capitalization_period_type = $capitalization_period_type;
     }
 
     function insert() {
         $product_pk = parent::product_insert_and_get_last_pk();
         $this->deposit_data['deposit_id'] = $product_pk[0]->product_id;
+        $this->deposit_data['rate'] = $this->rate;
+        $this->deposit_data['capitalization_period_type'] = $this->capitalization_period_type;
 
         $prepared_data = $this->prepare_data($this->deposit_data);
         $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";

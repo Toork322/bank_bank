@@ -1,6 +1,5 @@
 <?php
 
-
 require "Config.php";
 require "Database.php";
 require "Controller.php";

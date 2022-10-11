@@ -1,7 +1,7 @@
 <?php
 
 class Router {
-    protected $controller = 'mainController';
+    protected $controller = 'MainController';
     protected $method = 'index';
     protected $params = [];
 

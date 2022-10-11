@@ -8,12 +8,13 @@ class Credit extends Product
     function __construct($date_opening, $date_closing, $period, $credit_sum)
     {
         parent::__construct($date_opening, $date_closing, $period);
-        $this->credit_data['credit_sum'] = $this->credit_sum = $credit_sum;
+        $this->credit_sum = $credit_sum;
     }
 
     function insert() {
         $product_pk = parent::product_insert_and_get_last_pk();
         $this->credit_data['credit_id'] = $product_pk[0]->product_id;
+        $this->credit_data['credit_sum'] = $this->credit_sum;
 
         $prepared_data = $this->prepare_data($this->credit_data);
         $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
