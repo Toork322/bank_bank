@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models\Customer;
+
+use app\core\Model;
+
 class Passport extends Model
 {
     private $passport_id;
@@ -19,7 +23,7 @@ class Passport extends Model
         $this->passport_data['passport_issue_date'] = $this->passport_issue_date;
 
         $prepared_data = $this->prepare_data($this->passport_data);
-        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].") RETURNING passport_id;";
+        $query = "insert into ".$this->get_class_name_without_ns(get_class($this))." (".$prepared_data['columns'].") values (:".$prepared_data['values'].") RETURNING passport_id;";
         $this->passport_id = $this->query($query, $this->passport_data);
     }
 

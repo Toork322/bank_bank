@@ -1,5 +1,7 @@
 <?php
 
+namespace app\core;
+
 class Controller
 {
     public function view($view, $data = array()) {
@@ -10,4 +12,9 @@ class Controller
             require "../app/views/404.view.php";
         }
     }
+
+    public function redirect($link) {
+	    header("Location: ". ROOT . "/".trim($link, "/"));
+		die;
+	}
 }

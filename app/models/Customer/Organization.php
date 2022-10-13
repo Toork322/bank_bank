@@ -1,5 +1,7 @@
 <?php
 
+namespace app\models\Customer;
+
 class Organization extends Customer
 {
     private $jur_inn;
@@ -32,7 +34,7 @@ class Organization extends Customer
         $this->organization_data['phys_inn'] = $this->phys_inn;
 
         $prepared_data = $this->prepare_data($this->organization_data);
-        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].");";
+        $query = "insert into ".$this->get_class_name_without_ns(get_class($this))." (".$prepared_data['columns'].") values (:".$prepared_data['values'].");";
         $this->query($query, $this->organization_data);
     }
 

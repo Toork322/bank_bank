@@ -1,5 +1,6 @@
 <?php
 
+namespace app\models\Product;
 
 class Credit extends Product
 {
@@ -17,7 +18,7 @@ class Credit extends Product
         $this->credit_data['credit_sum'] = $this->credit_sum;
 
         $prepared_data = $this->prepare_data($this->credit_data);
-        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
+        $query = "insert into ".$this->get_class_name_without_ns(get_class($this))." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
         $this->query($query, $this->credit_data);
     }
 

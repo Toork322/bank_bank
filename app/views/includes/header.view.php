@@ -11,8 +11,8 @@
                 Физическим лицам
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="<?=ROOT?>/individual/credit">Кредиты</a></li>
-                <li><a class="dropdown-item" href="<?=ROOT?>/individual/deposit">Вклады</a></li>
+                <li><a class="dropdown-item" href="<?=ROOT?>/product/credit/individual">Кредиты</a></li>
+                <li><a class="dropdown-item" href="<?=ROOT?>/product/deposit/individual">Вклады</a></li>
         </div>
 
         <div class="btn-group">
@@ -20,8 +20,8 @@
                 Юридическим лицам
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="<?=ROOT?>/organization/credit">Кредиты</a></li>
-                <li><a class="dropdown-item" href="<?=ROOT?>/organization/deposit">Вклады</a></li>
+                <li><a class="dropdown-item" href="<?=ROOT?>/product/credit/organization">Кредиты</a></li>
+                <li><a class="dropdown-item" href="<?=ROOT?>/product/deposit/organization">Вклады</a></li>
             </ul>
         </div>
 

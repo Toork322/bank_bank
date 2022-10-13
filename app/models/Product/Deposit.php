@@ -1,5 +1,6 @@
 <?php
 
+namespace app\models\Product;
 
 class Deposit extends Product
 {
@@ -20,7 +21,7 @@ class Deposit extends Product
         $this->deposit_data['capitalization_period_type'] = $this->capitalization_period_type;
 
         $prepared_data = $this->prepare_data($this->deposit_data);
-        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
+        $query = "insert into ".$this->get_class_name_without_ns(get_class($this))." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
         $this->query($query, $this->deposit_data);
     }
 

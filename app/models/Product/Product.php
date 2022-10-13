@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models\Product;
+
+use app\core\Model;
+
 abstract class Product extends Model
 {
     private $date_opening;
@@ -19,7 +23,8 @@ abstract class Product extends Model
         $this->general_data['period'] = $this->period;
 
         $prepared_data = $this->prepare_data($this->general_data);
-        $query = "insert into ".get_parent_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].") RETURNING product_id;";
+        
+        $query = "insert into ".$this->get_class_name_without_ns(get_parent_class($this))." (".$prepared_data['columns'].") values (:".$prepared_data['values'].") RETURNING product_id;";
         return $this->query($query, $this->general_data);
     }
 }

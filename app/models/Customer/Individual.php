@@ -1,5 +1,7 @@
 <?php
 
+namespace app\models\Customer;
+
 class Individual extends Customer
 {
     private $phys_inn;
@@ -41,7 +43,8 @@ class Individual extends Customer
         $this->idividual_data['passport_id'] = $this->passport_id;
 
         $prepared_data = $this->prepare_data($this->idividual_data);
-        $query = "insert into ".get_class($this)." (".$prepared_data['columns'].") values (:".$prepared_data['values'].");";
+        $query = "insert into ".$this->get_class_name_without_ns(get_class($this))." (".$prepared_data['columns'].") values (:".$prepared_data['values'].")";
+        var_dump($query);
         $this->query($query, $this->idividual_data);
     }
 }
